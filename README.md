@@ -2,9 +2,9 @@
 
 - `커밋 컨벤션`
 
-    - Feat: 새로운 기능 추가!
-    - Fix: 버그 수정
-    - Docs: 문서 수정
+    - Feat: 새로운 기능 추가
+    - Fix: 기능 수정
+    - Docs: API Docs, Logging 수정
     - Style: 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
     - Refactor: 코드 리팩토링
     - Test: 테스트 코드, 리팩토링 테스트 코드 추가
@@ -31,7 +31,7 @@
             
             ```
         - 제목 예시
-            - [Add] UI button 구현
+            - [Feat] User CRUD 추가
               <br><br>
 - `branch 규칙`
     - 각자의 영어 이름을 딴 branch 명을 사용
