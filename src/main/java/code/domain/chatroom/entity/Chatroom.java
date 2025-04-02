@@ -3,7 +3,7 @@ package code.domain.chatroom.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Table(name = "chatroom")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chatroom {
 
@@ -34,4 +33,12 @@ public class Chatroom {
 
     @Column(nullable = false, name = "customer_id")
     private Long customerId;
+
+    @Builder
+    private Chatroom(LocalDateTime lastActiveDate, LocalDate lastActiveTime, Long ownerId, Long customerId) {
+        this.lastActiveDate = lastActiveDate;
+        this.lastActiveTime = lastActiveTime;
+        this.ownerId = ownerId;
+        this.customerId = customerId;
+    }
 }

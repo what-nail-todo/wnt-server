@@ -6,7 +6,6 @@ import lombok.*;
 @Table(name = "menu")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu {
 
