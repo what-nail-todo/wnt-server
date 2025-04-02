@@ -13,21 +13,21 @@ import lombok.NoArgsConstructor;
 public class Feed {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feed_id")
+    @Column(name = "feed_id", length = 30)
     private Long id;
 
-    @Column(nullable = false, name = "image_object_key")
-    private String ImageObjectKey;
+    @Column(nullable = false, name = "image_object_key", length = 100)
+    private String imageObjectKey;
 
-    @Column(nullable = false, name = "store_id")
+    @Column(nullable = false, name = "store_id", length = 30)
     private Long storeId;
 
-    @Column(nullable = false, name = "hashtags")
+    @Column(nullable = false, name = "hashtags", length = 30)
     private String hashtags;
 
     @Builder
     private Feed(String imageObjectKey, Long storeId, String hashtags) {
-        ImageObjectKey = imageObjectKey;
+        this.imageObjectKey = imageObjectKey;
         this.storeId = storeId;
         this.hashtags = hashtags;
     }

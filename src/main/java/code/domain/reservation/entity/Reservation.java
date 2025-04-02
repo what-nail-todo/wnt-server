@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public class Reservation {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reservation_id")
+    @Column(name = "reservation_id", length = 30)
     private Long id;
 
-    @Column(name = "request_message")
+    @Column(name = "request_message", columnDefinition = "TEXT")
     private String requestMessage;
 
     @Column
@@ -34,16 +34,16 @@ public class Reservation {
     @Column(name = "is_deposited")
     private Boolean isDeposited;
 
-    @Column(nullable = false, name = "user_id")
+    @Column(nullable = false, name = "user_id", length = 30)
     private Long userId;
 
-    @Column(nullable = false, name = "store_id")
+    @Column(nullable = false, name = "store_id", length = 30)
     private Long storeId;
 
-    @Column(nullable = false, name = "designer_id")
+    @Column(nullable = false, name = "designer_id", length = 30)
     private Long designerId;
 
-    @Column(nullable = false, name = "menu_id")
+    @Column(nullable = false, name = "menu_id", length = 30)
     private Long menuId;
 
     @Builder
