@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Table(name = "reservation")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 

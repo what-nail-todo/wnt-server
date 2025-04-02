@@ -3,7 +3,7 @@ package code.domain.chat.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "content_chat")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentChat {
 
@@ -32,4 +31,12 @@ public class ContentChat {
 
     @Column(nullable = false, name = "chatroom_id")
     private Long chatroomId;
+
+    @Builder
+    private ContentChat(String content, LocalDateTime sendingTime, Long senderId, Long chatroomId) {
+        this.content = content;
+        this.sendingTime = sendingTime;
+        this.senderId = senderId;
+        this.chatroomId = chatroomId;
+    }
 }

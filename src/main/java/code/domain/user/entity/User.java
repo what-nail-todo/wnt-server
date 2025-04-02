@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Table(name = "user")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 

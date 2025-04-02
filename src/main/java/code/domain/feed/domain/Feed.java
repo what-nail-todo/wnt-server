@@ -2,14 +2,13 @@ package code.domain.feed.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "feed")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Feed {
 
@@ -25,4 +24,11 @@ public class Feed {
 
     @Column(nullable = false, name = "hashtags")
     private String hashtags;
+
+    @Builder
+    private Feed(String imageObjectKey, Long storeId, String hashtags) {
+        ImageObjectKey = imageObjectKey;
+        this.storeId = storeId;
+        this.hashtags = hashtags;
+    }
 }
