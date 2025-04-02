@@ -12,19 +12,19 @@ public class Store {
     // TODO 매장 오픈 시간과 마감 시간 정보를 어떻게 관리할 지 속성, 로직 구성 필요
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id")
+    @Column(name = "store_id", length = 30)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30) // 한글 10자
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String location;
 
-    @Column(nullable = false, name = "phone_number")
+    @Column(nullable = false, name = "phone_number", length = 20)
     private String phoneNumber;
 
-    @Column(name = "instagram_id")
+    @Column(name = "instagram_id", length = 30)
     private String instagramId;
 
     @Column(name = "review_count")
@@ -33,7 +33,7 @@ public class Store {
     @Column
     private Double rating;
 
-    @Column(nullable = false, name = "owner_id")
+    @Column(nullable = false, name = "owner_id", length = 30)
     private Long ownerId;
 
     @Builder

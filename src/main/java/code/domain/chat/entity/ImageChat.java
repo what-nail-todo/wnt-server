@@ -16,22 +16,22 @@ import java.time.LocalDateTime;
 public class ImageChat {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_chat_id")
+    @Column(name = "image_chat_id", length = 30)
     private Long id;
 
-    @Column(nullable = false, name = "object_key")
+    @Column(nullable = false, name = "object_key", length = 100)
     private String objectKey;
 
-    @Column(nullable = false, name = "extension_type")
+    @Column(nullable = false, name = "extension_type", length = 20)
     private String extensionType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd/hh:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime sendingTime;
 
-    @Column(nullable = false, name = "sender_id")
+    @Column(nullable = false, name = "sender_id", length = 30)
     private Long senderId;
 
-    @Column(nullable = false, name = "chatroom_id")
+    @Column(nullable = false, name = "chatroom_id", length = 30)
     private Long chatroomId;
 
     @Builder

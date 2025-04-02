@@ -17,19 +17,19 @@ public class ContentChat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "content_chat_id")
+    @Column(name = "content_chat_id", length = 30)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd/hh:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime sendingTime;
 
-    @Column(nullable = false, name = "sender_id")
+    @Column(nullable = false, name = "sender_id", length = 30)
     private Long senderId;
 
-    @Column(nullable = false, name = "chatroom_id")
+    @Column(nullable = false, name = "chatroom_id", length = 30)
     private Long chatroomId;
 
     @Builder

@@ -10,25 +10,25 @@ import lombok.*;
 public class Menu {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "menu_id")
+    @Column(name = "menu_id", length = 30)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column
+    @Column(length = 200)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Long price;
 
-    @Column(nullable = false, name = "image_object_key")
+    @Column(nullable = false, name = "image_object_key", length = 100)
     private String imageObjectKey;
 
     @Column(nullable = false, name = "is_representative")
     private boolean isRepresentative;
 
-    @Column(nullable = false, name = "store_id")
+    @Column(nullable = false, name = "store_id", length = 30)
     private Long storeId;
 
     @Builder
