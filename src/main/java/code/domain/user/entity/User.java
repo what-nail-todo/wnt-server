@@ -38,8 +38,7 @@ public class User {
     private Role role;
 
     @Builder
-    private User(String email, String password, String name, LocalDate birthday,
-                 String profileImageObjectKey, String fcmToken, Role role) {
+    private User(String email, String password, String name, LocalDate birthday, String profileImageObjectKey, String fcmToken, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
