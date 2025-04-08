@@ -4,7 +4,7 @@ import code.global.exception.entity.CustomErrorCode;
 import code.global.exception.entity.ErrorCode;
 import code.global.exception.entity.ErrorResponse;
 import code.global.exception.entity.RestApiException;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+@Log4j2
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
