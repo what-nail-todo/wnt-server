@@ -16,7 +16,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String email;
+    private String loginId; // 정아가 지은 기린그림
 
     @Column(length = 50)
     private String password;
@@ -38,8 +38,8 @@ public class User {
     private Role role;
 
     @Builder
-    private User(String email, String password, String name, LocalDate birthday, String profileImageObjectKey, String fcmToken, Role role) {
-        this.email = email;
+    private User(String loginId, String password, String name, LocalDate birthday, String profileImageObjectKey, String fcmToken, Role role) {
+        this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.birthday = birthday;

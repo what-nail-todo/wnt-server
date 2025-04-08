@@ -25,6 +25,5 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
         response.setStatus(HttpStatus.SC_FORBIDDEN);
 
         response.sendRedirect("/no-permission");
-
     }
 }
