@@ -15,7 +15,8 @@ public enum CustomErrorCode implements ErrorCode{
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GLOBAL500_1", "서버 내부에서 처리할 수 없는 오류가 발생하였습니다."),
 
     // User
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404_1", "유저 조회에 실패하였습니다.");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404_1", "유저 조회에 실패하였습니다."),
+    DUPLICATED_LOGIN_ID(HttpStatus.BAD_REQUEST, "USER400_1", "중복되는 유저 아이디입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
