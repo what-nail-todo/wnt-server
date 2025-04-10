@@ -25,7 +25,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-up/normal")
-    public ResponseEntity<ResponseDto<String>> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<ResponseDto<String>> normalSignUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(authService.normalSignUp(signUpRequestDto), "일반 회원가입 완료"));
     }
 
