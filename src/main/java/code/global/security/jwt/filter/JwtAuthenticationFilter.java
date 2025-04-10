@@ -1,6 +1,6 @@
 package code.global.security.jwt.filter;
 
-import code.global.security.jwt.util.JwtTokenProvider;
+import code.global.security.jwt.util.JwtProvider;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,12 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     private static final List<String> whiteListUri = Arrays.asList(
             "/swagger-ui/**", "/v3/api-docs/**",
-            "/api/v1/auth/sign-up", "/api/v1/auth/login", "/api/v1/auth/code", "/api/v1/auth/check-id"
+            "/api/v1/auth/sign-up", "/api/v1/auth/sign-in", "/api/v1/auth/code", "/api/v1/auth/check-email"
     );
 
     @Override
@@ -42,10 +42,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, IOException{
 
         try{
-            String token = jwtTokenProvider.getAccessTokenFromRequest(request);
+            String token = jwtProvider.getAccessTokenFromRequest(request);
 
-            if(jwtTokenProvider.validateAccessToken(token)){
-                Authentication authentication = jwtTokenProvider.getAuthenticationFromAccessToken(token);
+            if(jwtProvider.validateAccessToken(token)){
+                Authentication authentication = jwtProvider.getAuthenticationFromAccessToken(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
@@ -53,6 +53,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }catch (JwtException e){
             throw e;
         }
-
     }
 }

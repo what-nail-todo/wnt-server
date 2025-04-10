@@ -17,7 +17,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String loginId; // 정아가 지은 기린그림
+    private String email; // 정아가 지은 기린그림
 
     @Column(length = 50)
     private String password;
@@ -36,16 +36,21 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    private Provider provider;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    private User(SignUpRequestDto signUpRequestDto, String password){
-        this.loginId = signUpRequestDto.getLoginId();
+    private User(SignUpRequestDto signUpRequestDto, Provider provider, String password){
+        this.email = signUpRequestDto.getEmail();
         this.password = password;
         this.name = signUpRequestDto.getName();
         this.birthday = signUpRequestDto.getBirthDay();
         this.profileImageObjectKey = signUpRequestDto.getProfileImageObjectKey();
         this.fcmToken = signUpRequestDto.getFcmToken();
+        this.provider = provider;
         this.role = signUpRequestDto.getUserType().equals("customer") ? Role.CUSTOMER : Role.OWNER;
     }
 }

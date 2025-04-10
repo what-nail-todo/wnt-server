@@ -16,7 +16,8 @@ public enum CustomErrorCode implements ErrorCode{
 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404_1", "유저 조회에 실패하였습니다."),
-    DUPLICATED_LOGIN_ID(HttpStatus.BAD_REQUEST, "USER400_1", "중복되는 유저 아이디입니다.");
+    DUPLICATED_LOGIN_ID(HttpStatus.BAD_REQUEST, "USER400_1", "중복되는 유저 아이디입니다."),
+    PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "USER400_2", "일치하지 않는 비밀번호입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
