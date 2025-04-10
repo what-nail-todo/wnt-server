@@ -1,5 +1,6 @@
 package code.domain.user.entity;
 
+import code.domain.user.dto.req.SignUpRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,13 +39,13 @@ public class User {
     private Role role;
 
     @Builder
-    private User(String loginId, String password, String name, LocalDate birthday, String profileImageObjectKey, String fcmToken, Role role) {
-        this.loginId = loginId;
+    private User(SignUpRequestDto signUpRequestDto, String password){
+        this.loginId = signUpRequestDto.getLoginId();
         this.password = password;
-        this.name = name;
-        this.birthday = birthday;
-        this.profileImageObjectKey = profileImageObjectKey;
-        this.fcmToken = fcmToken;
-        this.role = role;
+        this.name = signUpRequestDto.getName();
+        this.birthday = signUpRequestDto.getBirthDay();
+        this.profileImageObjectKey = signUpRequestDto.getProfileImageObjectKey();
+        this.fcmToken = signUpRequestDto.getFcmToken();
+        this.role = signUpRequestDto.getUserType().equals("customer") ? Role.CUSTOMER : Role.OWNER;
     }
 }
