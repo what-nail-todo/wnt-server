@@ -33,7 +33,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto<String>> signIn(@Valid @RequestBody SignInRequestDto signInRequestDto){
         TokenResponse tokenResponse = authService.signIn(signInRequestDto);
         return ResponseEntity.status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("accessToken", tokenResponse.getAccessToken(), domain, tokenResponse.getExpiredTime()).toString())
+                .header(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("accessToken", tokenResponse.getAccessToken(), tokenResponse.getExpiredTime()).toString())
                 .body(ResponseDto.of(signInRequestDto.getEmail(), "일반 로그인 완료"));
     }
 

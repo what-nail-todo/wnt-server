@@ -33,19 +33,19 @@ public class JwtProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    public TokenResponse createToken(Authentication authentication){
+    public TokenResponse createToken(String email){
 
         Date now = new Date();
 
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(email)
                 .claim("type", "Access")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + accessTokenExpiredTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        log.info("[createToken] : Jwt Token issue complete with User's Id {}", authentication.getName());
+        log.info("[createToken] : Jwt Token issue complete with User's Id {}", email);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)

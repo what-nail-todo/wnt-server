@@ -55,7 +55,7 @@ public class AuthService {
 
             log.info("[signIn] : Authenticate succeed with {}", authentication.getName());
 
-            return jwtProvider.createToken(authentication);
+            return jwtProvider.createToken(authentication.getName());
         }catch (UsernameNotFoundException e){
             throw new RestApiException(CustomErrorCode.USER_NOT_FOUND);
         }catch (BadCredentialsException e){
