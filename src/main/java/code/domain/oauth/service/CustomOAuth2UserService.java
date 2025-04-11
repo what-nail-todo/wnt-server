@@ -36,7 +36,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(provider, oAuth2User.getAttributes(), accessToken);
 
         User user = userRepository.findByEmail(oAuth2UserInfo.getEmail())
-                .orElseGet(() -> User.tempUserBuilder().buildTempUser());
+                .orElseGet(() -> User.tempUserBuilder()
+                                .email(oAuth2UserInfo.getEmail())
+                                .buildTempUser()
+                );
 
         log.info("[ convertToOAuth2UserDetailsImpl() ] : 유저 정보 로드 완료 \"email = {}\"", oAuth2UserInfo.getEmail());
 

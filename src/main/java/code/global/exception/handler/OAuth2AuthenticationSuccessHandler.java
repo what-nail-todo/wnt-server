@@ -1,10 +1,9 @@
 package code.global.exception.handler;
 
 import code.domain.oauth.entity.common.OAuth2UserDetailsImpl;
-import code.domain.oauth.service.CustomOAuth2UserService;
 import code.domain.oauth.util.OAuth2AuthorizationRequestRepository;
 import code.domain.redis.service.RedisService;
-import code.domain.user.service.AuthService;
+import code.domain.user.repository.UserRepository;
 import code.global.security.domain.TokenResponse;
 import code.global.security.jwt.util.CookieUtil;
 import code.global.security.jwt.util.JwtProvider;
@@ -30,9 +29,9 @@ import static code.domain.oauth.util.OAuth2AuthorizationRequestRepository.REDIRE
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final AuthService authService;
-    private final CustomOAuth2UserService oAuth2UserService;
     private final RedisService redisService;
+
+    private final UserRepository userRepository;
 
     private final JwtProvider jwtProvider;
     private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
@@ -55,7 +54,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = redirectUrl.orElse(getDefaultTargetUrl());
 
-        if(authService.checkUserPresent(oAuth2UserDetails.getName())){
+        if(userRepository.existsByEmail(oAuth2UserDetails.getName())){
             TokenResponse tokenResponse = jwtProvider.createToken(oAuth2UserDetails.getName());
 
             response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("access-token", tokenResponse.getAccessToken(), tokenResponse.getExpiredTime()).toString());

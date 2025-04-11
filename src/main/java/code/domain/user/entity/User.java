@@ -74,7 +74,7 @@ public class User {
     }
 
     @Builder(builderMethodName = "tempUserBuilder", buildMethodName = "buildTempUser")
-    private User(){
+    private User(String email){
         this.role = Role.TEMP;
     }
 }
