@@ -21,12 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+
     private final JwtProvider jwtProvider;
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     private static final List<String> whiteListUri = Arrays.asList(
             "/swagger-ui/**", "/v3/api-docs/**",
-            "/api/v1/auth/sign-up", "/api/v1/auth/sign-in", "/api/v1/auth/code", "/api/v1/auth/check-email"
+            "/api/v1/auth/email"
     );
 
     @Override
