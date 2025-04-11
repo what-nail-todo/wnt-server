@@ -6,10 +6,12 @@ import code.global.exception.entity.RestApiException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -33,6 +35,9 @@ public class EmailService {
             helper.setText(content, true);
 
             javaMailSender.send(message);
+
+            log.info("[ sendVerificationEmail() ] : 인증 메일 전송 성공 {}", email);
+
         } catch (MessagingException e){
             throw new RestApiException(CustomErrorCode.SEND_MAIL_FAILED);
         }

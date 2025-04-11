@@ -3,10 +3,8 @@ package code.domain.oauth.service;
 import code.domain.oauth.entity.common.OAuth2UserDetailsImpl;
 import code.domain.oauth.entity.common.OAuth2UserInfo;
 import code.domain.oauth.util.OAuth2UserInfoFactory;
-import code.domain.user.UserRepository;
+import code.domain.user.repository.UserRepository;
 import code.domain.user.entity.User;
-import code.global.exception.entity.CustomErrorCode;
-import code.global.exception.entity.RestApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -14,7 +12,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
@@ -39,13 +36,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(provider, oAuth2User.getAttributes(), accessToken);
 
         User user = userRepository.findByEmail(oAuth2UserInfo.getEmail())
-                .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
+                .orElseGet(() -> User.tempUserBuilder().buildTempUser());
+
+        log.info("[ convertToOAuth2UserDetailsImpl() ] : 유저 정보 로드 완료 \"email = {}\"", oAuth2UserInfo.getEmail());
 
         return new OAuth2UserDetailsImpl(oAuth2UserInfo, user.getRole());
-    }
-
-    @Transactional(readOnly = true)
-    public boolean checkUserPresent(String email){
-        return userRepository.existsByEmail(email);
     }
 }

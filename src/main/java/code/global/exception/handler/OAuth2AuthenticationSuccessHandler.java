@@ -4,6 +4,7 @@ import code.domain.oauth.entity.common.OAuth2UserDetailsImpl;
 import code.domain.oauth.service.CustomOAuth2UserService;
 import code.domain.oauth.util.OAuth2AuthorizationRequestRepository;
 import code.domain.redis.service.RedisService;
+import code.domain.user.service.AuthService;
 import code.global.security.domain.TokenResponse;
 import code.global.security.jwt.util.CookieUtil;
 import code.global.security.jwt.util.JwtProvider;
@@ -29,6 +30,7 @@ import static code.domain.oauth.util.OAuth2AuthorizationRequestRepository.REDIRE
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final AuthService authService;
     private final CustomOAuth2UserService oAuth2UserService;
     private final RedisService redisService;
 
@@ -53,10 +55,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = redirectUrl.orElse(getDefaultTargetUrl());
 
-        if(oAuth2UserService.checkUserPresent(oAuth2UserDetails.getName())){
+        if(authService.checkUserPresent(oAuth2UserDetails.getName())){
             TokenResponse tokenResponse = jwtProvider.createToken(oAuth2UserDetails.getName());
 
             response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("access-token", tokenResponse.getAccessToken(), tokenResponse.getExpiredTime()).toString());
+
+            log.info("[ setTargetUrl() ] : 서비스 회원입니다. 메인페이지로 리다이랙트합니다.");
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .path("/main")
@@ -65,8 +69,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }else {
             redisService.saveOAuth2UserInfo(oAuth2UserDetails.getUserInfo().getId(), oAuth2UserDetails.getName(), oAuth2UserDetails.getUserInfo().getProvider());
 
+            log.info("[ setTargetUrl() ] : 서비스 회원이 아닙니다. 회원가입 페이지로 리다이랙트합니다.");
+
             return UriComponentsBuilder.fromUriString(targetUrl)
-                    .path("/sign-up")
+                    .path("/sign-up/oauth")
                     .queryParam("provider-id", oAuth2UserDetails.getUserInfo().getId().toString())
                     .build()
                     .toUriString();

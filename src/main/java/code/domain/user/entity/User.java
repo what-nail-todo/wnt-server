@@ -72,4 +72,9 @@ public class User {
         this.role = socialSignUpRequestDto.getUserType().equals("customer") ? Role.CUSTOMER : Role.OWNER;
         this.acceptAdEmails = socialSignUpRequestDto.getAcceptAdEmails();
     }
+
+    @Builder(builderMethodName = "tempUserBuilder", buildMethodName = "buildTempUser")
+    private User(){
+        this.role = Role.TEMP;
+    }
 }

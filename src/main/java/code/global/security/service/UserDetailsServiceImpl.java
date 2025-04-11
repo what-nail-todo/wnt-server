@@ -1,6 +1,6 @@
 package code.global.security.service;
 
-import code.domain.user.UserRepository;
+import code.domain.user.repository.UserRepository;
 import code.domain.user.entity.User;
 import code.global.security.domain.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;

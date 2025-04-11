@@ -5,7 +5,7 @@ import code.domain.email.dto.req.VerifyEmailAuthCodeRequestDto;
 import code.domain.email.service.EmailService;
 import code.domain.email.util.RandomCodeGenerator;
 import code.domain.redis.service.RedisService;
-import code.domain.user.UserRepository;
+import code.domain.user.repository.UserRepository;
 import code.domain.user.dto.req.NormalSignUpRequestDto;
 import code.domain.user.dto.req.SignInRequestDto;
 import code.domain.user.dto.req.SocialSignUpRequestDto;
@@ -55,7 +55,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .buildNormalUser();
 
-        log.info("[normalSignUp] : Sign Up succeed with {}", user.getEmail());
+        log.info("[ socialSignUp() ] : 일반 회원가입 성공 \"email = {}\"", user.getEmail());
 
         return userRepository.save(user).getEmail();
     }
@@ -77,7 +77,7 @@ public class AuthService {
                 .provider(oauth2UserInfo.get("provider"))
                 .buildSocialUser();
 
-        log.info("[socialSignUp] : Sign Up succeed with {}", user.getEmail());
+        log.info("[ socialSignUp() ] : 소셜 회원가입 성공 \"email = {}\"", user.getEmail());
 
         return userRepository.save(user).getEmail();
     }
@@ -88,7 +88,7 @@ public class AuthService {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-            log.info("[signIn] : Authenticate succeed with {}", authentication.getName());
+            log.info("[ signIn() ] : 유저 인증 성공 \"email = {}\"", authentication.getName());
 
             return jwtProvider.createToken(authentication.getName());
         }catch (UsernameNotFoundException e){
@@ -119,5 +119,10 @@ public class AuthService {
 
     public Boolean verifyEmailAuthCode(VerifyEmailAuthCodeRequestDto request){
         return redisService.verifyAuthCode(request.getEmail(), request.getInputCode());
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkUserPresent(String email){
+        return userRepository.existsByEmail(email);
     }
 }

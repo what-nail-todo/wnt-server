@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+@Schema(description = "로그인 Response")
 @Getter
-@Schema(description = "Login Response")
 public class TokenResponse {
 
     @Schema(

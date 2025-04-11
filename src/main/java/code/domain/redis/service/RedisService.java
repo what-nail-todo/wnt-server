@@ -4,6 +4,7 @@ import code.domain.user.entity.Provider;
 import code.global.exception.entity.CustomErrorCode;
 import code.global.exception.entity.RestApiException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class RedisService {
@@ -49,8 +51,11 @@ public class RedisService {
             redisTemplate.persist(email);
             hashOperations.put(email, "verified", "true");
 
+            log.info("[ verifyAuthCode() ] : 메일 인증 성공 \"email = {}\"", email);
             return true;
         }
+
+        log.warn("[ verifyAuthCode() ] : 메일 인증 살퍄 \"email = {}\"", email);
         return false;
     }
 

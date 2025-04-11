@@ -1,4 +1,4 @@
-package code.domain.user;
+package code.domain.user.repository;
 
 import code.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
