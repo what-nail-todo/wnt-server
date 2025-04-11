@@ -63,12 +63,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .build()
                     .toUriString();
         }else {
-            response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("provider-id", oAuth2UserDetails.getUserInfo().getId()).toString());
-
             redisService.saveOAuth2UserInfo(oAuth2UserDetails.getUserInfo().getId(), oAuth2UserDetails.getName(), oAuth2UserDetails.getUserInfo().getProvider());
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .path("/sign-up")
+                    .queryParam("provider-id", oAuth2UserDetails.getUserInfo().getId().toString())
                     .build()
                     .toUriString();
         }

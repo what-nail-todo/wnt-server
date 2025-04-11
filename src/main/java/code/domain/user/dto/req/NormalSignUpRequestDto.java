@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SignUpRequestDto {
+public class NormalSignUpRequestDto {
 
     @Size(max = 50, message = "이메일 길이 제한을 초과하였습니다.")
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
@@ -35,8 +35,10 @@ public class SignUpRequestDto {
     @NotBlank(message = "FcmToken이 비어있습니다.")
     private String fcmToken;
 
-    // TODO Custom Bean Validation
     @NotBlank
     @Pattern(regexp = "^(customer|owner)$", message = "유효하지 않은 타입입니다.")
     private String userType;
+
+    @NotBlank(message = "광고성 메일 수신 여부가 비어있습니다.")
+    private Boolean acceptAdEmails;
 }

@@ -1,9 +1,14 @@
 package code.domain.user.service;
 
+import code.domain.email.dto.req.SendVerificationEmailRequestDto;
+import code.domain.email.dto.req.VerifyEmailAuthCodeRequestDto;
+import code.domain.email.service.EmailService;
+import code.domain.email.util.RandomCodeGenerator;
+import code.domain.redis.service.RedisService;
 import code.domain.user.UserRepository;
+import code.domain.user.dto.req.NormalSignUpRequestDto;
 import code.domain.user.dto.req.SignInRequestDto;
-import code.domain.user.dto.req.SignUpRequestDto;
-import code.domain.user.entity.Provider;
+import code.domain.user.dto.req.SocialSignUpRequestDto;
 import code.domain.user.entity.User;
 import code.global.exception.entity.CustomErrorCode;
 import code.global.exception.entity.RestApiException;
@@ -20,10 +25,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+import java.util.UUID;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private final EmailService emailService;
+    private final RedisService redisService;
 
     private final UserRepository userRepository;
 
@@ -32,25 +43,49 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     @Transactional
-    public String normalSignUp(SignUpRequestDto signUpRequestDto){
-        if(userRepository.existsByEmail(signUpRequestDto.getEmail()))
-            throw new RestApiException(CustomErrorCode.DUPLICATED_LOGIN_ID);
+    public String normalSignUp(NormalSignUpRequestDto request){
+        if(userRepository.existsByEmail(request.getEmail()))
+            throw new RestApiException(CustomErrorCode.DUPLICATED_EMAIL);
 
-        User user = User.builder()
-                .signUpRequestDto(signUpRequestDto)
-                .provider(Provider.NORMAL)
-                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-                .build();
+        if(!redisService.getEmailVerification(request.getEmail()))
+            throw new RestApiException(CustomErrorCode.NOT_VERIFIED_EMAIL);
+
+        User user = User.normalUserBuilder()
+                .normalSignUpRequestDto(request)
+                .password(passwordEncoder.encode(request.getPassword()))
+                .buildNormalUser();
 
         log.info("[normalSignUp] : Sign Up succeed with {}", user.getEmail());
 
         return userRepository.save(user).getEmail();
     }
 
+    @Transactional
+    public String socialSignUp(SocialSignUpRequestDto request){
+        Map<String, String> oauth2UserInfo = redisService.getOAuth2UserInfo(request.getProviderId());
+
+        if(oauth2UserInfo.isEmpty())
+            throw new RestApiException(CustomErrorCode.PROVIDER_ID_NOT_AVAILABLE);
+
+        if(userRepository.existsByEmail(oauth2UserInfo.get("email")))
+            throw new RestApiException(CustomErrorCode.DUPLICATED_EMAIL);
+
+        User user = User.socialUserBuilder()
+                .socialSignUpRequestDto(request)
+                .email(oauth2UserInfo.get("email"))
+                .password(UUID.randomUUID().toString())
+                .provider(oauth2UserInfo.get("provider"))
+                .buildSocialUser();
+
+        log.info("[socialSignUp] : Sign Up succeed with {}", user.getEmail());
+
+        return userRepository.save(user).getEmail();
+    }
+
     @Transactional(readOnly = true)
-    public TokenResponse signIn(SignInRequestDto signInRequestDto){
+    public TokenResponse signIn(SignInRequestDto request){
         try{
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(signInRequestDto.getEmail(), signInRequestDto.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
             log.info("[signIn] : Authenticate succeed with {}", authentication.getName());
@@ -68,4 +103,21 @@ public class AuthService {
         return !userRepository.existsByEmail(targetEmail);
     }
 
+    public String sendVerificationEmail(SendVerificationEmailRequestDto request){
+
+        if(userRepository.existsByEmail(request.getEmail()))
+            throw new RestApiException(CustomErrorCode.DUPLICATED_EMAIL);
+
+        String authCode = RandomCodeGenerator.generate();
+
+        emailService.sendVerificationEmail(request.getEmail(), authCode);
+
+        redisService.saveAuthCode(request.getEmail(), authCode);
+
+        return request.getEmail();
+    }
+
+    public Boolean verifyEmailAuthCode(VerifyEmailAuthCodeRequestDto request){
+        return redisService.verifyAuthCode(request.getEmail(), request.getInputCode());
+    }
 }
