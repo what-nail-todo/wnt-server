@@ -17,62 +17,52 @@ import java.util.Date;
 
 @Log4j2
 @Component
-public class JwtTokenProvider {
+public class JwtProvider {
 
     @Value("${spring.security.jwt.access-token.expired-time}")
-    private Long accessTokenExpiredTime;
+    private long accessTokenExpiredTime;
 
     @Value("${spring.security.jwt.refresh-token.expired-time}")
-    private Long refreshTokenExpiredTime;
+    private long refreshTokenExpiredTime;
 
     private final Key key;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public JwtTokenProvider(@Value("${spring.security.jwt.secret}")String secret, UserDetailsServiceImpl userDetailsService) {
+    public JwtProvider(@Value("${spring.security.jwt.secret}")String secret, UserDetailsServiceImpl userDetailsService) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.userDetailsService = userDetailsService;
     }
 
-    public TokenResponse createToken(Authentication authentication){
+    public TokenResponse createToken(String email){
 
         Date now = new Date();
 
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("type", "Access")
+                .setSubject(email)
+                .claim("type", "access-token")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + accessTokenExpiredTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        String refreshToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("type", "Refresh")
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + accessTokenExpiredTime))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        log.info("[createToken] : Jwt Token issue complete with User's Id {}", authentication.getName());
+        log.info("[createToken] : Jwt Token issue complete with User's Id {}", email);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .expiredTime(accessTokenExpiredTime)
                 .build();
     }
 
     public String getAccessTokenFromRequest(HttpServletRequest request){
 
-        if(request.getHeader("Authorization") == null){
-            log.error("[getAccessTokenFromRequest] : Request's \"Authorization\" header is null");
-            throw new JwtException("Authorization Header is null");
-        }
-
-        return request.getHeader("Authorization")
-                .substring(7);
+        return CookieUtil.getTokenFromRequest(request);
     }
 
     public boolean validateAccessToken(String accessToken){
+
+        if (accessToken == null)
+            throw new JwtException("토큰이 비어있습니다");
+
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -95,14 +85,14 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthenticationFromAccessToken(String accessToken){
-            UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(getLoginIdFromAccessToken(accessToken));
+            UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(getEmailFromAccessToken(accessToken));
 
             log.info("[getAuthenticationFromAccessToken] : Get Authentication From Access Token complete with {}", userDetails.getUsername());
 
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getLoginIdFromAccessToken(String accessToken){
+    public String getEmailFromAccessToken(String accessToken){
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
