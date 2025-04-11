@@ -43,3 +43,4 @@ out/
 
 # Application Properties
 src/main/resources/application.yml
+test.yml
