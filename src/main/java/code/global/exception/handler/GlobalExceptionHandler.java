@@ -23,21 +23,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<ErrorResponse<String>> handleRestApiException(RestApiException e){
-        log.error("Error occur with : {}", e.getMessage());
+        log.error("RunTime Exception occur with : {}", e.getMessage());
 
         return handleExceptionInternal(e.getCode());
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse<String>> handleEndPointException(NoResourceFoundException e){
-        log.error("Error occur with : {}", e.getMessage());
+        log.error("InvalidRequest Exception occur with : {}", e.getMessage());
 
         return handleExceptionInternal(CustomErrorCode.NOT_VALID_API_ENDPOINT);
     }
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ErrorResponse<String>> handleSqlException(DataAccessException e){
-        log.error("Error occur with : {}", e.getMessage());
+        log.error("Database Exception occur with : {}", e.getMessage());
 
         return handleExceptionInternal(CustomErrorCode.SQL_OPERATION_FAILED);
     }

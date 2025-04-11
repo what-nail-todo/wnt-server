@@ -35,7 +35,7 @@ public class SignUpRequestDto {
     @NotBlank(message = "FcmToken이 비어있습니다.")
     private String fcmToken;
 
-    // Custom Bean Validation 으로 바꿀 예정
+    // TODO Custom Bean Validation
     @NotBlank
     @Pattern(regexp = "^(customer|owner)$", message = "유효하지 않은 타입입니다.")
     private String userType;

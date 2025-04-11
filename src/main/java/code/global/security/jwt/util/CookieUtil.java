@@ -12,7 +12,15 @@ import java.util.Optional;
 
 public class CookieUtil {
 
+    public static final long DEFAULT_MAX_AGE = 3600000L;
+
+    public static ResponseCookie createCookie(String name, String value) {
+        return createCookie(name, value, DEFAULT_MAX_AGE);
+    }
+
     public static ResponseCookie createCookie(String name, String value, long maxAge){
+
+        // TODO domain 주소값 변경 필요
         return ResponseCookie.from(name, value)
                 .domain("localhost")
                 .path("/")
@@ -28,7 +36,7 @@ public class CookieUtil {
 
         if (cookies != null){
             for (Cookie cookie : cookies){
-                if (cookie.getName().equals("accessToken"))
+                if (cookie.getName().equals("access-token"))
                     return cookie.getValue();
             }
         }

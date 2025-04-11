@@ -30,12 +30,12 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
         log.error("[onAuthenticationFailure] : OAuth2 Authorization Failed");
 
-        // TODO orElse(), path() 인자 실제 에러 페이지 주소 설정하기
-
+        // TODO orElse 주소값 변경 필요
         String targetUrl = CookieUtil.getCookie(request, REDIRECT_URI_PARAM)
                 .map(Cookie::getValue)
                 .orElse("localhost");
 
+        // TODO path 주소값 변경 필요
         targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
                 .path("/error")
                 .build()

@@ -3,6 +3,7 @@ package code.global.exception.handler;
 import code.domain.oauth.entity.common.OAuth2UserDetailsImpl;
 import code.domain.oauth.service.CustomOAuth2UserService;
 import code.domain.oauth.util.OAuth2AuthorizationRequestRepository;
+import code.domain.redis.service.RedisService;
 import code.global.security.domain.TokenResponse;
 import code.global.security.jwt.util.CookieUtil;
 import code.global.security.jwt.util.JwtProvider;
@@ -29,6 +30,7 @@ import static code.domain.oauth.util.OAuth2AuthorizationRequestRepository.REDIRE
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final CustomOAuth2UserService oAuth2UserService;
+    private final RedisService redisService;
 
     private final JwtProvider jwtProvider;
     private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
@@ -41,7 +43,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = setTargetUrl(request, response, oAuth2UserDetails);
 
-        clearAuthenticationAttributes(request);
+        clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
@@ -54,16 +56,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if(oAuth2UserService.checkUserPresent(oAuth2UserDetails.getName())){
             TokenResponse tokenResponse = jwtProvider.createToken(oAuth2UserDetails.getName());
 
-            response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("accessToken", tokenResponse.getAccessToken(), tokenResponse.getExpiredTime()).toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("access-token", tokenResponse.getAccessToken(), tokenResponse.getExpiredTime()).toString());
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .path("/main")
                     .build()
                     .toUriString();
         }else {
-            response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("provider-id", oAuth2UserDetails.getUserInfo().getId(), 3600000L).toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie("provider-id", oAuth2UserDetails.getUserInfo().getId()).toString());
 
-            // TODO redis provider-id 저장 로직 추가
+            redisService.saveOAuth2UserInfo(oAuth2UserDetails.getUserInfo().getId(), oAuth2UserDetails.getName(), oAuth2UserDetails.getUserInfo().getProvider());
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .path("/sign-up")

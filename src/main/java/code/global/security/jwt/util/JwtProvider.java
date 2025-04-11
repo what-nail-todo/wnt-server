@@ -39,7 +39,7 @@ public class JwtProvider {
 
         String accessToken = Jwts.builder()
                 .setSubject(email)
-                .claim("type", "Access")
+                .claim("type", "access-token")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + accessTokenExpiredTime))
                 .signWith(key, SignatureAlgorithm.HS256)
