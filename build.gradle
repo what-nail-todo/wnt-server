@@ -50,12 +50,12 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-admin:9.2.0'
 
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // coolSMS
-    implementation 'net.nurigo:sdk:4.3.2'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

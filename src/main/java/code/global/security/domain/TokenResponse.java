@@ -4,15 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+@Schema(description = "로그인 Response")
 @Getter
-@Schema(description = "Login Response")
 public class TokenResponse {
-
-    @Schema(
-            description = "토큰 타입",
-            example = "Bearer"
-    )
-    private final String type;
 
     @Schema(
             description = "액세스 토큰",
@@ -21,15 +15,14 @@ public class TokenResponse {
     private final String accessToken;
 
     @Schema(
-            description = "리프레시 토큰",
-            example = "eyJhbGckpXVCJ9.eyJzdWIiOiJ1c2VyQGMDc2NDAwLCJleHAiOjE3MDcyODYwMDB9.ab8ijkl9012mnop3456"
+            description = "만료 시간",
+            example = "3030000"
     )
-    private final String refreshToken;
+    private final long expiredTime;
 
     @Builder
-    private TokenResponse(String accessToken, String refreshToken){
-        this.type = "Bearer";
+    private TokenResponse(String accessToken, long expiredTime){
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
+        this.expiredTime = expiredTime;
     }
 }

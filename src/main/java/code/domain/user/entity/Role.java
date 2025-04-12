@@ -12,7 +12,9 @@ public enum Role {
 
     ADMIN("ROLE_ADMIN", "ADMIN"),
     CUSTOMER("ROLE_CUSTOMER", "CUSTOMER"),
-    OWNER("ROLE_OWNER", "OWNER");
+    OWNER("ROLE_OWNER", "OWNER"),
+    TEMP("ROLE_TEMP", "TEMP")
+    ;
 
     private final String securityRole;
     private final String roleName;
