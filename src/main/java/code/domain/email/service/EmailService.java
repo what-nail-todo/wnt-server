@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
             helper.setTo(email);
+            helper.setFrom("ahh010145@gmail.com", "What nail todo?");
             helper.setSubject(subject);
             helper.setText(content, true);
 
@@ -38,7 +41,7 @@ public class EmailService {
 
             log.info("[ sendVerificationEmail() ] : 인증 메일 전송 성공 {}", email);
 
-        } catch (MessagingException e){
+        } catch (MessagingException | UnsupportedEncodingException e){
             throw new RestApiException(CustomErrorCode.SEND_MAIL_FAILED);
         }
     }

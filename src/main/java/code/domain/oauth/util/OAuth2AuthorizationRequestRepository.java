@@ -4,7 +4,6 @@ import code.global.security.jwt.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
@@ -14,14 +13,9 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class OAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
-    @Value("${spring.security.oauth2.cookie.key.request}")
-    public static String OAUTH2_AUTHORIZATION_REQUEST;
-
-    @Value("${spring.security.oauth2.cookie.key.redirect-uri}")
-    public static String REDIRECT_URI_PARAM;
-
-    @Value("${spring.security.oauth2.cookie.key.expired-time}")
-    private static int COOKIE_EXPIRED_TIME;
+    public static final String OAUTH2_AUTHORIZATION_REQUEST = "oauth2_authorization_request";
+    public static final String REDIRECT_URI_PARAM = "redirect_uri";
+    private static final int COOKIE_EXPIRED_TIME = 10800000;
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request){
