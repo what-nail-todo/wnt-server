@@ -21,3 +21,7 @@ services:
       - redis-data:/data
     environment:
       - TZ=Asia/Seoul
+
+volumes:
+  redis-data:
+    driver: local
