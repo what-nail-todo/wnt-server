@@ -109,4 +109,5 @@ jobs:
               docker rm what-nail-todo-redis
             fi
 
-            docker-compose up -d --pull always
+            docker-compose pull
+            docker-compose up -d
