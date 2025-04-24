@@ -18,10 +18,10 @@ services:
     ports:
       - "6382:6379"
     volumes:
-      - redis-data:/data
+      - what-nail-todo-redis-volume:/data
     environment:
       - TZ=Asia/Seoul
 
 volumes:
-  redis-data:
+  what-nail-todo-redis-volume:
     driver: local
