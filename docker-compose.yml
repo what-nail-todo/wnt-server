@@ -3,7 +3,7 @@ version: '3.8'
 services:
   spring:
     container_name: what-nail-todo-server
-    image: ${DOCKER_USERNAME}/what-nail-todo-server:latest
+    image: ${DOCKER_HUB_USERNAME}/what-nail-todo-server:latest
     ports:
       - "8520:8080"
     depends_on:
