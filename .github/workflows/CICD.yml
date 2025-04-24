@@ -62,10 +62,10 @@ jobs:
           password: ${{secrets.DOCKER_HUB_PASSWORD}}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/what-nail-todo-server:latest .
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/what-nail-todo-server:latest .
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/what-nail-todo-server:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/what-nail-todo-server:latest
 
   deploy:
     name: Deploy to AppCenter server
@@ -96,7 +96,7 @@ jobs:
           script: |
             cd /home/serverking/what-nail-todo
             
-            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" > .env
+            echo "DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}" > .env
             echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
 
             if [ "$(docker ps -aq -f name=what-nail-todo-server)" ]; then
