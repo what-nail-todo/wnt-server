@@ -52,7 +52,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          chomd +x ./gradlew
+          chmod +x ./gradlew
           ./gradlew clean build -x test -i --no-daemon -Dspring.profiles.active=prod
 
       - name: Login to Docker hub
