@@ -25,12 +25,12 @@ public class SwaggerConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("BearerAuth");
 
         Server server = new Server();
-        server.setUrl("http://localhost:8080");
+        server.setUrl("https://what-nail-todo.inuappcenter.kr:8520");
 
         return new OpenAPI()
                 .info(new Info()
                         .title("What Nail Todo API Docs")
-                        .description("AppCenter project What Nail Todo API Docs")
+                        .description("앱센터 16.5기 동계 프로젝트 \"네일뭐해?\" Swagger API Docs")
                         .version("v1")
                 )
                 .servers(List.of(server))

@@ -43,4 +43,4 @@ out/
 
 # Application Properties
 src/main/resources/application.yml
-test.yml
+docker-compose.yml
