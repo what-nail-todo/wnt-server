@@ -25,7 +25,7 @@ public class SwaggerConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("BearerAuth");
 
         Server server = new Server();
-        server.setUrl("https://what-nail-todo.inuappcenter.kr:8520");
+        server.setUrl("https://what-nail-todo.inuappcenter.kr");
 
         return new OpenAPI()
                 .info(new Info()
