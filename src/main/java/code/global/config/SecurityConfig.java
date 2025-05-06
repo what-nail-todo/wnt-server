@@ -60,7 +60,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("https://what-nail-todo.inuappcenter.kr"));
+        configuration.setAllowedOriginPatterns(List.of("https://what-nail-todo.inuappcenter.kr:8520"));
         configuration.setExposedHeaders(List.of("*"));
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
