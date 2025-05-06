@@ -3,6 +3,7 @@ package code.domain.user.dto.req;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -73,6 +74,6 @@ public class NormalSignUpRequestDto {
             description = "광고성 메일 수신 여부",
             example = "true"
     )
-    @NotBlank(message = "광고성 메일 수신 여부가 비어있습니다.")
+    @NotNull(message = "광고성 메일 수신 여부가 비어있습니다.")
     private Boolean acceptAdEmails;
 }
