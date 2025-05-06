@@ -67,7 +67,7 @@ public class NormalSignUpRequestDto {
             example = "customer"
     )
     @NotBlank
-    @Pattern(regexp = "^(customer|owner)$", message = "유효하지 않은 타입입니다.")
+    @Pattern(regexp = "^(CUSTOMER|OWNER|ADMIN|TEMP)$", message = "유효하지 않은 타입입니다.")
     private String userType;
 
     @Schema(
