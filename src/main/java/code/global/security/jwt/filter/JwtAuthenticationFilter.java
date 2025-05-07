@@ -29,8 +29,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/swagger-ui/**", "/v3/api-docs/**",
             "/api/v1/auth/email",
             "/api/v1/auth/sign-up/normal",
-            "/api/v1/auth/sign-up/social"
-            );
+            "/api/v1/auth/sign-up/social",
+            "/api/v1/auth/sign-in"
+    );
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request){
