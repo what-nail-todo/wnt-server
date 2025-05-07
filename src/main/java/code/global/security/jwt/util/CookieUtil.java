@@ -22,7 +22,6 @@ public class CookieUtil {
 
         // TODO domain 주소값 변경 필요
         return ResponseCookie.from(name, value)
-                .domain("localhost")
                 .path("/")
                 .httpOnly(true)
                 .secure(true)
