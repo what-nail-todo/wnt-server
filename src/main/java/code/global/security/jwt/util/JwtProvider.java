@@ -45,7 +45,7 @@ public class JwtProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        log.info("[createToken] : Jwt Token issue complete with User's Id {}", email);
+        log.info("[ createToken() ] : Jwt Token issue complete with User's Id {}", email);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -70,7 +70,7 @@ public class JwtProvider {
                     .parseClaimsJws(accessToken)
                     .getBody();
 
-            log.info("[validateAccessToken] : Token validation complete");
+            log.info("[ validateAccessToken() ] : Token validation complete");
 
             return true;
         } catch (ExpiredJwtException e) {
@@ -87,7 +87,7 @@ public class JwtProvider {
     public Authentication getAuthenticationFromAccessToken(String accessToken){
             UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(getEmailFromAccessToken(accessToken));
 
-            log.info("[getAuthenticationFromAccessToken] : Get Authentication From Access Token complete with {}", userDetails.getUsername());
+            log.info("[ getAuthenticationFromAccessToken() ] : Get Authentication From Access Token complete with {}", userDetails.getUsername());
 
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

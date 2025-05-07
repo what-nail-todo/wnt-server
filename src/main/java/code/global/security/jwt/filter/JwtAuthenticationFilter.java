@@ -40,11 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .anyMatch(uri -> antPathMatcher.match(uri, path));
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException{
-
         try{
             String token = jwtProvider.getAccessTokenFromRequest(request);
 
