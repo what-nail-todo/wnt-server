@@ -17,13 +17,13 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true)
     private String email; // 정아가 지은 기린그림
 
-    @Column(length = 50)
+    @Column(nullable = true)
     private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

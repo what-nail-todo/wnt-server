@@ -55,7 +55,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .buildNormalUser();
 
-        log.info("[ socialSignUp() ] : 일반 회원가입 성공 \"email = {}\"", user.getEmail());
+        log.info("[ normalSignUp() ] : 일반 회원가입 성공 \"email = {}\"", user.getEmail());
 
         return userRepository.save(user).getEmail();
     }
