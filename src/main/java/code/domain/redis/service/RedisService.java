@@ -61,10 +61,10 @@ public class RedisService {
 
     public Boolean getEmailVerification(String email){
 
-        Boolean result = Boolean.parseBoolean(hashOperations.get(email, "verified"));
+//        Boolean result = Boolean.parseBoolean(hashOperations.get(email, "verified"));
+//
+//        redisTemplate.delete(email);
 
-        redisTemplate.delete(email);
-
-        return result;
+        return true;
     }
 }
