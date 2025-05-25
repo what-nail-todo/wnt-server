@@ -57,7 +57,7 @@ public class AuthService {
 
         log.info("[ normalSignUp() ] : 일반 회원가입 성공 \"email = {}\"", user.getEmail());
 
-        return userRepository.save(user).getEmail();
+        return userRepository.save(user).getName();
     }
 
     @Transactional
@@ -79,7 +79,7 @@ public class AuthService {
 
         log.info("[ socialSignUp() ] : 소셜 회원가입 성공 \"email = {}\"", user.getEmail());
 
-        return userRepository.save(user).getEmail();
+        return userRepository.save(user).getName();
     }
 
     @Transactional(readOnly = true)
